@@ -5,7 +5,6 @@ from django.contrib.auth import login,logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from . import forms as f
-from datetime import datetime
 
 # Create your views here.
 # logged in user cannot go to login page
