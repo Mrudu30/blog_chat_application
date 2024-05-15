@@ -1,0 +1,78 @@
+{% extends "main.html" %}
+{% block content %}
+{% load static %}
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        margin: 0px;
+        padding: 0px;
+        overflow: hidden;
+    }
+    .topic-card-body{
+        border-bottom: 1px solid black;
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 0.75rem;
+        color: black;
+        font-weight: bold;
+    }
+    .content-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .custom-card-body {
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1rem;
+    }
+    .card-deck {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+</style>
+<div class="home-container m-0 p-0">
+    <div>
+        <h3>Browse topics</h3>
+        <hr>
+        <div style="overflow-y: auto;height: 67.5vh;">
+            <div class="card">
+                <a href="{% url 'blog_home' %}" class="topic-card-body m-1 text-center">All</a>
+            </div>
+            {% for i in topics %}
+                <div class="card">
+                    <div class="topic-card-body m-1 text-center"><a href="{% url 'blog_home' %}?q={{i.name}}" style="color: black;">{{i.name}}</a></div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+            <h3>Recent Blogs</h3>
+            <hr>
+        <div style="overflow-y: auto;height: 54vh;max-width: 310vh;" class="card-deck">
+            {% if blogs %}
+                {% for b in blogs %}
+                <div class="card flex" style="max-width: 220px; max-height: 290px">
+                    {% if b.images %}
+                        <img src="{% static 'uploads/blog_pictures/' %}{{ b.first_image }}" class="card-img-top" alt="First Image" style="width: 217px; height: 170px">
+                    {% endif %}
+                    <div class="card-body">
+                      <h4 class="card-title">{{b.title}}</h4>
+                      <a href="#" class="btn btn-primary">View Blog</a>
+                    </div>
+                  </div>
+                {% endfor %}
+            {% else %}
+                <div class="card m-1">
+                    <div class="custom-card-body">
+                        <h3>No Blogs Found</h3>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

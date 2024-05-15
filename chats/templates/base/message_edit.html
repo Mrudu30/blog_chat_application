@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+{% comment %} to delete any item from our project {% endcomment %}
+{% block content %}
+<div class="container my-4" style="height: 70vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card m-5">
+                <div class="card-body px-3 py-4">
+                    <fieldset>
+                        <legend>Update Message</legend>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <p class="form-group">
+                                <label for="id_body" class="form-label">Body:</label>
+                                <textarea name="body" cols="60" rows="4" required id="id_body" class="form-control">{{message.body}}</textarea>
+                            </p>
+                            <input type="submit" value="Submit" class=" btn btn-sm btn-primary form-control">
+                        </form>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

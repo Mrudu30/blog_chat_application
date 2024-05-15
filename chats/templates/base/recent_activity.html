@@ -1,0 +1,20 @@
+{% if room_message %}
+    {% for rm in room_message %}
+        <div>
+            <small><a href="{% url 'profile' rm.user.id %}">@{{ rm.user }}</a> -- {{rm.created|timesince}}</small>
+            {% if request.user == rm.user %}
+                <span style="margin-left: 3vh">
+                    <a href="{% url 'update-message' rm.id%}" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i></a>
+                    <a href="{% url 'delete-message' rm.id%}" class="mx-2 btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                </span>
+            {% endif %}
+        </div>
+        <br>
+            <small>Replied in "{{rm.room}}"</small>
+            <p>{{ rm }}</p>
+            <hr>
+    {% endfor %}
+{% else %}
+    <p>No Activity Found</p>
+    <hr>
+{% endif %}

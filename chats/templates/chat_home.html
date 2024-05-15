@@ -1,0 +1,92 @@
+{% extends "main.html" %}
+{% block content %}
+{% load static %}
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 2.75fr 1.25fr;
+        margin: 2px;
+    }
+    .topic-card-body{
+        border-bottom: 1px solid black;
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 0.75rem;
+        color: black;
+        font-weight: bold;
+    }
+    .content-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .custom-card-body {
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1rem;
+    }
+    .custom-card-footer{
+        padding: 0.5rem 1rem;
+        background-color: rgba(0, 0, 0, 0.03);
+        border-top: 1px solid rgba(0, 0, 0, 0.125);
+    }
+</style>
+<div class="home-container">
+    <div>
+        <h3>Browse topics</h3>
+        <hr>
+        <div style="overflow-y: scroll;height: 67vh;">
+            <div class="card">
+                <a href="{% url 'home' %}" class="topic-card-body m-1 text-center">All</a>
+            </div>
+            {% for i in topic %}
+                <div class="card">
+                    <div class="topic-card-body m-1 text-center"><a href="{% url 'home' %}?q={{i.name}}" style="color: black;">{{i.name}}</a></div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        <p class="content-box">
+            <h5>{{ room_count }} rooms available</h5>
+            <a href="{% url 'create-room' %}" class="btn btn-sm btn-primary">Create a room</a>
+            <hr>
+        </p>
+        <div style="overflow-y: scroll;height: 58vh;">
+            {% if rooms %}
+                {% for r in rooms %}
+                <div class="card m-1">
+                    <div class="custom-card-body">
+                        <p class="content-box m-0">
+                            <span><a href="{% url 'profile' r.host.id %}">@{{r.host.username}}</a></span>
+                            {% if request.user == r.host %}
+                                <span style="justify-content: space-between;">
+                                    <a href="{% url 'update-room' r.id %}" class="btn btn-sm btn-primary"> Edit room </a>
+                                    <a href="{% url 'delete-room' r.id %}" class="btn btn-sm btn-primary">Delete room</a>
+                                </span>
+                            {% endif %}
+                        </p>
+                        <h3>{{r.id}} ---- <a href='{% url "room" r.id %}'>{{r.name}}</a></h3>
+                    </div>
+                    <small class="custom-card-footer">{{r.topic.name}}</small>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="card m-1">
+                    <div class="custom-card-body">
+                        <h3>No Room Found</h3>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div>
+        <h3>Recent activities</h3>
+        <hr>
+        <div style="overflow-y: scroll;height: 65vh;">
+            {% include 'base/recent_activity.html' %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

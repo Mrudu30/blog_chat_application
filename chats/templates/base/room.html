@@ -1,0 +1,70 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<style>
+    .room-wrapper{
+        display:grid;
+        grid-template-columns: 3fr 1fr;
+        height: 76vh;
+        margin: 5px;
+    }
+    .right-section{
+        border: 0.5px solid;
+        padding: 5px;
+        border-radius: 5px;
+        height: inherit;
+        overflow-y: scroll;
+    }
+</style>
+<div class="room-wrapper">
+    <div>
+        <div>
+            <h3>{{rooms.name}}</h3>
+        </div>
+        <p>
+            {{ rooms.desc }}
+        </p>
+        <hr/>
+        <div class="comment-wrapper">
+            <h4>CONVERSATION</h4>
+            <hr>
+            {% for com in comments %}
+                <div class="comment" style="justify-content: space-between;">
+                    <small><b>@{{com.user.username}}: {{com.created|timesince}}</b></small>
+
+                    {% if request.user == com.user %}
+                        <a href="{% url 'update-message' com.id %}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{% url 'delete-message' com.id%}" class="btn btn-primary btn-sm ">Delete</a>
+                    {% endif %}
+                    <p>{{com.body}}</p>
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="comment-form">
+            <form action="" method="post" class="container">
+                {% csrf_token %}
+                <textarea name="body" id="" cols="50" rows="3" class="form-control" placeholder="Write your message here"></textarea>
+                <br>
+                {% if request.user.is_authenticated %}
+                    <input type="submit" value="Comment" class="btn btn-primary form-control">
+                {% else %}
+                    <a href="{% url 'loginpage' %}" class="btn" style="text-decoration:none;">
+                        Comment
+                    </a>
+                {% endif %}
+            </form>
+        </div>
+        <hr>
+    </div>
+        <div class="right-section">
+            <h3>Participants</h3>
+            <hr>
+            {% for p in participants %}
+              <p>@{{ p }}</p>
+              <hr>
+            {% endfor %}
+        </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "main.html" %}
+{% block content %}
+<div class="container mt-4">
+    <form enctype="multipart/form-data" id="blog_form">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="topic" class="form-label">Select One/Multiple Topics related to your Blog.</label>
+          <select class="form-control" name="topic" id="topic" multiple>
+            {% for topic in topic_list %}
+                <option value="{{topic.id}}">{{topic.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+            <label for="title">Title<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" name="title" id="title" placeholder="Enter Title to Your Blog.">
+            <span id="title_help" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="content">Content<span class="text-danger">*</span></label>
+            <textarea maxlength="1000" class="form-control" placeholder="Write content for your blog" name="content" id="content" rows="4"></textarea>
+            <span id="content_help" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="images">Add Images<span class="text-danger">*</span></label>
+            <input type="file" class="form-control-file" name="images" id="images" accept="image/*" multiple>
+            <span id="images_help" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="request_user" value="{{request.user.id}}">
+            <button type="submit" class="btn btn-primary">Add Blog</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

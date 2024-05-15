@@ -1,0 +1,134 @@
+{% extends "main.html" %}
+{% block content %}
+{% load static %}
+<body>
+    <div class="container m-5">
+        <h2 class="card-title text-center">Edit Your Profile</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3 profile-picture-container">
+                    <p for="user_image" class="form-label">Profile Picture:</p>
+                    {% if user.user_image %}
+                        <img src="{% static 'uploads/pictures/' %}{{ user.user_image }}" width="250" height="250" alt="Profile Picture" class="rounded profile-picture">
+                    {% else %}
+                        <img src="{% static 'images/pf.jpg' %}" alt="Profile Picture" width="250" height="250" class="rounded profile-picture">
+                    {% endif %}
+                    <div style="display:none;" id="upload-image">
+                        <input type="file" name="pfp_image" id="pfp_image">
+                        <label for="upload-image" class="edit-image-option">Edit Image</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="first_name" class="form-label">First name:</label>
+                    <input type="text" id="first_name" name="first_name" value="{{data.first_name}}" class="form-control" placeholder="Enter your Firstname">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="last_name" class="form-label">Last name:</label>
+                    <input type="text" id="last_name" name="last_name" value="{{data.last_name}}" class="form-control" placeholder="Enter your Lastname">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="mobno" class="form-label">Mobile Number:</label>
+                    <input type="tel" id="mobno" name="mobile_number" value="{{data.mobile_number}}" class="form-control" placeholder="Enter your Mobile Number">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="dob" class="form-label">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" class="form-control" value="{{formatted_dob}}" placeholder="Enter your Date of Birth">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" id="username" name="username" class="form-control" value="{{data.username}}" placeholder="Enter your Username Choice">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" name="email" class="form-control" value="{{data.email}}" placeholder="Enter your email">
+                </div>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td colspan="3">
+                            <label class="form-label">Please Provide some Hobbies for Blogs/Chatrooms:</label>
+                        </td>
+                    </tr>
+                    {% for hobby in all_hobbies %}
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" id="hobby{{ forloop.counter }}" name="hobbies" class="border-dark form-check-input" value="{{ hobby.id }}" {% if hobby in data.hobbies %} checked {% endif %}><label for="hobby{{ forloop.counter }}" class="form-check-label">{{ hobby.name }}</label>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="password1" class="form-label">Password:</label>
+                    <input type="password" id="password1" name="password1" class="form-control" placeholder="Enter your password">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="password2" class="form-label">Confirm Password:</label>
+                    <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirm your password">
+                </div>
+            </div>
+            <div class="md-3">
+                <button type="submit" class="form-control btn btn-primary btn-block">Edit Profile</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const profilePictureContainer = document.querySelector('.profile-picture-container');
+        const profilePicture = profilePictureContainer.querySelector('.profile-picture');
+        const uploadImageInput = profilePictureContainer.querySelector('#pfp_image');
+
+        // Show file input when "Edit Image" is clicked
+        const editImageOption = profilePictureContainer.querySelector('.edit-image-option');
+        editImageOption.addEventListener('click', function() {
+            uploadImageInput.click();
+        });
+
+        // When the user selects a new image, update the preview
+        uploadImageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                profilePicture.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+    });
+
+    // Get today's date
+    var today = new Date();
+
+    // Calculate the minimum date for eligibility (18 years ago)
+    var minDate = new Date();
+    minDate.setFullYear(today.getFullYear() - 18);
+
+    // Convert the minimum date to the format expected by the input[type="date"]
+    var minDateString = minDate.toISOString().slice(0, 10);
+
+    // Set the min attribute of the date input field
+    document.getElementById('dob').setAttribute('max', minDateString);
+    //dobInput.focus();
+</script>
+
+{% endblock content %}

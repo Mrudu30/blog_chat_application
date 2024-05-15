@@ -1,0 +1,42 @@
+.edit-image-option {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    display: none; /* Hide by default */
+}
+
+.profile-picture-container:hover .edit-image-option {
+    display: block; /* Show on hover */
+}
+
+/* Custom CSS for jQuery UI dialog */
+#blog_creation.ui-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; /* Adjust width as needed */
+    background-color: white; /* Set background color */
+    border: 1px solid #ccc; /* Add border */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
+}
+
+/* Custom CSS for dialog title */
+#blog_creation.ui-dialog .ui-dialog-titlebar {
+    background-color: #007bff; /* Set title background color */
+    color: white; /* Set title text color */
+}
+
+/* Custom CSS for dialog buttons */
+#blog_creation.ui-dialog .ui-dialog-buttonpane {
+    background-color: #f8f9fa; /* Set button pane background color */
+}
+
+/* Custom CSS for dialog content */
+#blog_creation.ui-dialog .ui-dialog-content {
+    padding: 20px; /* Add padding to content */
+}
