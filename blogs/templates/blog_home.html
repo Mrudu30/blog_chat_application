@@ -32,6 +32,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
+        overflow: hidden hidden;
     }
 </style>
 <div class="home-container m-0 p-0">
@@ -50,20 +51,20 @@
         </div>
     </div>
     <div>
-            <h3>Recent Blogs</h3>
-            <hr>
-        <div style="overflow-y: auto;height: 54vh;max-width: 310vh;" class="card-deck">
+        <h3>Recent Blogs</h3>
+        <hr>
+        <div style="height: 54vh;max-width: 310vh;" class="card-deck">
             {% if blogs %}
                 {% for b in blogs %}
-                <div class="card flex" style="max-width: 220px; max-height: 290px">
-                    {% if b.images %}
-                        <img src="{% static 'uploads/blog_pictures/' %}{{ b.first_image }}" class="card-img-top" alt="First Image" style="width: 217px; height: 170px">
-                    {% endif %}
-                    <div class="card-body">
-                      <h4 class="card-title">{{b.title}}</h4>
-                      <a href="#" class="btn btn-primary">View Blog</a>
+                    <div class="card flex" style="max-width: 220px; max-height: 290px">
+                        {% if b.images %}
+                            <img src="{% static 'uploads/blog_pictures/' %}{{ b.first_image }}" class="card-img-top" alt="First Image" style="width: 217px; height: 170px">
+                        {% endif %}
+                        <div class="card-body">
+                            <h4 class="card-title">{{b.title}}</h4>
+                            <a href="#" class="btn btn-primary">View Blog</a>
+                        </div>
                     </div>
-                  </div>
                 {% endfor %}
             {% else %}
                 <div class="card m-1">
